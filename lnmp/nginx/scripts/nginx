@@ -1,0 +1,34 @@
+#!/bin/bash
+#chkconfig:2345 80 80
+#description:nginx
+#processname:nginx
+nginx=/usr/local/nginx/sbin/nginx
+case $1 in 
+start)
+echo "Starting Nginx..."
+$nginx
+echo "done."
+;;
+stop)
+echo "Stopping Nginx..."
+$nginx -s stop
+echo "done" 
+;;
+reload)
+echo "Reloading Nginx..."
+$nginx -s reload
+echo "done"
+;;
+status)
+a=$(ps -ef|grep nginx|wc -l)
+	if [ $a -eq 4 ];then
+		echo "Nginx has been stopped"
+	else
+		echo "Nginx is starting"
+	fi
+;;
+*)
+echo "Usage: service nginx {start|reload|stop|status}"
+;;
+esac
+

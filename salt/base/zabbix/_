@@ -1,0 +1,21 @@
+zabbix-agent:
+  pkg.installed:
+    - name: zabbix22-agent
+  file.managed:
+    - name: /etc/zabbix_agentd.conf
+    - source: salt://zabbix/files/zabbix_agentd.conf
+    - user: root
+    - group: root
+    - mode: 644
+    - template: jinja
+    - defaults:
+      ZABBIX-SERVER: 192.168.56.11
+      AGENT-HOSTNAME: {{ grains['fqdn'] }}
+    - require:
+      - pkg: zabbix-agent
+  service.running:
+    - name: zabbix-agent
+    - enable: True
+    - watch:
+      - file: zabbix-agent
+      - pkg: zabbix-agent
